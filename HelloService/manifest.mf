@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+OpenIDE-Module: com.netbeansrpc.helloservice
+OpenIDE-Module-Install: com/netbeansrpc/helloservice/Installer.class
+OpenIDE-Module-Localizing-Bundle: com/netbeansrpc/helloservice/Bundle.properties
+OpenIDE-Module-Specification-Version: 2.1.5
+
