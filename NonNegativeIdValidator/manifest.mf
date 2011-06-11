@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: com.netbenasrcp.notnegativeidvalidator
+OpenIDE-Module-Localizing-Bundle: com/netbenasrcp/notnegativeidvalidator/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

@@ -10,6 +10,8 @@ import org.openide.windows.WindowManager;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Lookup;
+import org.openide.util.lookup.Lookups;
 
 /**
  * Top component which displays something.
@@ -30,7 +32,7 @@ public final class TaskEditorTopComponent extends TopComponent {
         initComponents();
         setName(NbBundle.getMessage(TaskEditorTopComponent.class, "CTL_TaskEditorTopComponent"));
         setToolTipText(NbBundle.getMessage(TaskEditorTopComponent.class, "HINT_TaskEditorTopComponent"));
-
+        associateLookup(Lookups.singleton(((TaskEditorPanel) taskEditorPanel1).task));
     }
 
     /** This method is called from within the constructor to
@@ -54,10 +56,10 @@ public final class TaskEditorTopComponent extends TopComponent {
             .addComponent(taskEditorPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.netbeansrcp.taskeditor.TaskEditorPanel taskEditorPanel1;
     // End of variables declaration//GEN-END:variables
+
     @Override
     public void componentOpened() {
         // TODO add custom code on component opening

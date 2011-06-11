@@ -12,6 +12,8 @@ package com.netbeansrcp.taskeditor;
 
 import com.netbeansrcp.taskmodel.TaskImpl;
 import com.netbeansrcp.taskmodel.api.Task;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.event.DocumentEvent;
@@ -23,7 +25,10 @@ import javax.swing.event.DocumentListener;
  */
 public class TaskEditorPanel extends javax.swing.JPanel {
 
-    private Task task = new TaskImpl();
+    public Task task = new TaskImpl();
+    private boolean noUpdate = false;
+    private static final String PROP_TASK = "TASK";
+    private PropertyChangeSupport pcs;
     private DocumentListener docListener = new DocumentListener() {
 
         @Override
@@ -72,6 +77,7 @@ public class TaskEditorPanel extends javax.swing.JPanel {
         jSliderProgress = new javax.swing.JSlider();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(TaskEditorPanel.class, "TaskEditorPanel.jLabel1.text")); // NOI18N
 
@@ -126,29 +132,39 @@ public class TaskEditorPanel extends javax.swing.JPanel {
         jTextAreaDescription.setRows(5);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
+        jButton1.setText(org.openide.util.NbBundle.getMessage(TaskEditorPanel.class, "TaskEditorPanel.jButton1.text")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jTextFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(jTextFieldId, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(jTextFieldParentId, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(jTextFieldDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(jSliderPriority, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(jSliderProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(jTextFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(jTextFieldId, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(jTextFieldParentId, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(jTextFieldDueDate, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(jSliderPriority, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(jSliderProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -181,7 +197,9 @@ public class TaskEditorPanel extends javax.swing.JPanel {
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addContainerGap())
         );
 
@@ -196,7 +214,18 @@ public class TaskEditorPanel extends javax.swing.JPanel {
     private void jSliderProgressStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderProgressStateChanged
         updateTask();
     }//GEN-LAST:event_jSliderProgressStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Task oldTask = task;
+        task = new TaskImpl();
+        if (pcs == null) {
+            pcs = new PropertyChangeSupport(this);
+        }
+        pcs.firePropertyChange(PROP_TASK, oldTask, task);
+        updateForm();
+    }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -215,6 +244,9 @@ public class TaskEditorPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void updateTask() {
+        if (noUpdate) {
+            return;
+        }
         this.task.setName(this.jTextFieldName.getText());
         Date due = null;
         try {
@@ -244,6 +276,7 @@ public class TaskEditorPanel extends javax.swing.JPanel {
     }
 
     private void updateForm() {
+        noUpdate = true;
         jTextFieldId.setText(task.getId());
         jTextFieldParentId.setText(task.getParentId());
         jTextFieldName.setText(task.getName());
@@ -258,5 +291,21 @@ public class TaskEditorPanel extends javax.swing.JPanel {
 
         }
         jSliderProgress.setValue(task.getProgr());
+        noUpdate = false;
+    }
+
+    @Override
+    public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+        if (pcs == null) {
+            pcs = new PropertyChangeSupport(this);
+        }
+        pcs.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+        if (pcs != null) {
+            pcs.removePropertyChangeListener(listener);
+        }
     }
 }
