@@ -5,6 +5,7 @@
 package com.netbeansrcp.tasklog;
 
 import com.netbeansrcp.taskmodel.api.Task;
+import com.netbeansrcp.tasksource.api.TaskSource;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
@@ -13,7 +14,6 @@ import javax.swing.JList;
 import org.openide.util.LookupEvent;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -81,18 +81,12 @@ public final class TaskLogTopComponent extends TopComponent implements PropertyC
 
     @Override
     public void componentOpened() {
-        TopComponent tc =  WindowManager.getDefault().findTopComponent("TaskEditorTopComponent");
-        Lookup l = tc.getLookup();
-        result = l.lookupResult(Task.class);
-//        result = WindowManager.getDefault().findTopComponent("TaskEditorTopComponent").getLookup().lookupResult(Task.class);
+        result = Lookup.getDefault().lookup(TaskSource.class).getLookup().lookupResult(Task.class);
         result.addLookupListener(this);
         for (Task task : result.allInstances()) {
             listModel.addElement(task);
             task.addPropertyChangeListener(this);
         }
-//        Task task = WindowManager.getDefault().findTopComponent("TaskEditorTopComponent").getLookup().lookup(Task.class);
-//        listModel.addElement(task);
-//        task.addPropertyChangeListener(this);
     }
 
     @Override

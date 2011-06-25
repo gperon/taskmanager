@@ -3,19 +3,11 @@
     <type>org.netbeans.modules.apisupport.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
-            <code-name-base>com.netbeansrcp.tasklog</code-name-base>
+            <code-name-base>com.netbeansrcp.taskduplicator</code-name-base>
             <suite-component/>
             <module-dependencies>
                 <dependency>
                     <code-name-base>com.netbeansrcp.taskmodel</code-name-base>
-                    <build-prerequisite/>
-                    <compile-dependency/>
-                    <run-dependency>
-                        <specification-version>1.0</specification-version>
-                    </run-dependency>
-                </dependency>
-                <dependency>
-                    <code-name-base>com.netbeansrcp.tasksource</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>

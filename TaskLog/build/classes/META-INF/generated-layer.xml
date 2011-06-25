@@ -2,50 +2,6 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN"
                             "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
-    <folder name="xml">
-        <folder name="entities">
-            <folder name="com_netbeansrcp_tasklog">
-                <file name="TaskLog" url="nbres:/org/netbeans/modules/settings/resources/properties-1_0.dtd">
-                    <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
-                    <attr name="hint.originalPublicID" stringvalue="-//com.netbeansrcp.tasklog//TaskLog//EN"/>
-                </file>
-            </folder>
-        </folder>
-        <folder name="memory">
-            <folder name="com">
-                <folder name="netbeansrcp">
-                    <folder name="tasklog">
-                        <file name="TaskLogTopComponent">
-                            <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
-                            <attr name="settings.providerPath" stringvalue="xml/lookups//com_netbeansrcp_tasklog/TaskLog.instance"/>
-                        </file>
-                    </folder>
-                </folder>
-            </folder>
-        </folder>
-        <folder name="lookups">
-            <folder name="com_netbeansrcp_tasklog">
-                <file name="TaskLog.instance">
-                    <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
-                    <attr
-                        methodvalue="org.netbeans.api.settings.Factory.create" name="instanceCreate"/>
-                    <attr
-                        methodvalue="org.netbeans.api.settings.Factory.properties" name="settings.convertor"/>
-                    <attr name="settings.instanceClass" stringvalue="com.netbeansrcp.tasklog.TaskLogTopComponent"/>
-                    <attr name="settings.instanceOf" stringvalue="com.netbeansrcp.tasklog.TaskLogTopComponent"/>
-                    <attr boolvalue="true" name="xmlproperties.preventStoring"/>
-                </file>
-            </folder>
-        </folder>
-    </folder>
-    <folder name="Menu">
-        <folder name="Window">
-            <file name="com-netbeansrcp-tasklog-TaskLogTopComponent.shadow">
-                <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
-                <attr name="originalFile" stringvalue="Actions/Window/com-netbeansrcp-tasklog-TaskLogTopComponent.instance"/>
-            </file>
-        </folder>
-    </folder>
     <folder name="Windows2">
         <folder name="Components">
             <file name="TaskLogTopComponent.settings">
@@ -80,6 +36,50 @@
                 <attr
                     bundlevalue="com.netbeansrcp.tasklog.Bundle#CTL_TaskLogAction" name="displayName"/>
             </file>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Window">
+            <file name="com-netbeansrcp-tasklog-TaskLogTopComponent.shadow">
+                <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
+                <attr name="originalFile" stringvalue="Actions/Window/com-netbeansrcp-tasklog-TaskLogTopComponent.instance"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="xml">
+        <folder name="entities">
+            <folder name="com_netbeansrcp_tasklog">
+                <file name="TaskLog" url="nbres:/org/netbeans/modules/settings/resources/properties-1_0.dtd">
+                    <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
+                    <attr name="hint.originalPublicID" stringvalue="-//com.netbeansrcp.tasklog//TaskLog//EN"/>
+                </file>
+            </folder>
+        </folder>
+        <folder name="memory">
+            <folder name="com">
+                <folder name="netbeansrcp">
+                    <folder name="tasklog">
+                        <file name="TaskLogTopComponent">
+                            <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
+                            <attr name="settings.providerPath" stringvalue="xml/lookups//com_netbeansrcp_tasklog/TaskLog.instance"/>
+                        </file>
+                    </folder>
+                </folder>
+            </folder>
+        </folder>
+        <folder name="lookups">
+            <folder name="com_netbeansrcp_tasklog">
+                <file name="TaskLog.instance">
+                    <!--com.netbeansrcp.tasklog.TaskLogTopComponent-->
+                    <attr
+                        methodvalue="org.netbeans.api.settings.Factory.create" name="instanceCreate"/>
+                    <attr
+                        methodvalue="org.netbeans.api.settings.Factory.properties" name="settings.convertor"/>
+                    <attr name="settings.instanceClass" stringvalue="com.netbeansrcp.tasklog.TaskLogTopComponent"/>
+                    <attr name="settings.instanceOf" stringvalue="com.netbeansrcp.tasklog.TaskLogTopComponent"/>
+                    <attr boolvalue="true" name="xmlproperties.preventStoring"/>
+                </file>
+            </folder>
         </folder>
     </folder>
 </filesystem>

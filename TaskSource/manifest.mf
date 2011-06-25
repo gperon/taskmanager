@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: com.netbeansrcp.tasksource
+OpenIDE-Module-Localizing-Bundle: com/netbeansrcp/tasksource/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
