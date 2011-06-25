@@ -10,12 +10,15 @@ import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import org.openide.util.LookupEvent;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Lookup;
+import org.openide.util.LookupListener;
 
 /**
  * Top component which displays something.
@@ -30,8 +33,9 @@ persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @ActionReference(path = "Menu/Window" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(displayName = "#CTL_TaskLogAction",
 preferredID = "TaskLogTopComponent")
-public final class TaskLogTopComponent extends TopComponent implements PropertyChangeListener {
+public final class TaskLogTopComponent extends TopComponent implements PropertyChangeListener, LookupListener {
 
+    private Lookup.Result<Task> result;
     private DefaultListModel listModel = new DefaultListModel();
 
     @Override
@@ -77,9 +81,18 @@ public final class TaskLogTopComponent extends TopComponent implements PropertyC
 
     @Override
     public void componentOpened() {
-        Task task = WindowManager.getDefault().findTopComponent("TaskEditorTopComponent").getLookup().lookup(Task.class);
-        listModel.addElement(task);
-        task.addPropertyChangeListener(this);
+        TopComponent tc =  WindowManager.getDefault().findTopComponent("TaskEditorTopComponent");
+        Lookup l = tc.getLookup();
+        result = l.lookupResult(Task.class);
+//        result = WindowManager.getDefault().findTopComponent("TaskEditorTopComponent").getLookup().lookupResult(Task.class);
+        result.addLookupListener(this);
+        for (Task task : result.allInstances()) {
+            listModel.addElement(task);
+            task.addPropertyChangeListener(this);
+        }
+//        Task task = WindowManager.getDefault().findTopComponent("TaskEditorTopComponent").getLookup().lookup(Task.class);
+//        listModel.addElement(task);
+//        task.addPropertyChangeListener(this);
     }
 
     @Override
@@ -87,6 +100,7 @@ public final class TaskLogTopComponent extends TopComponent implements PropertyC
         for (Enumeration e = listModel.elements(); e.hasMoreElements();) {
             ((Task) e.nextElement()).removePropertyChangeListener(this);
         }
+        result = null;
     }
 
     void writeProperties(java.util.Properties p) {
@@ -99,5 +113,14 @@ public final class TaskLogTopComponent extends TopComponent implements PropertyC
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+    }
+
+    @Override
+    public void resultChanged(LookupEvent ev) {
+        Lookup.Result<Task> rslt = (Lookup.Result<Task>) ev.getSource();
+        for (Task task : rslt.allInstances()) {
+            listModel.addElement(task);
+            task.addPropertyChangeListener(this);
+        }
     }
 }

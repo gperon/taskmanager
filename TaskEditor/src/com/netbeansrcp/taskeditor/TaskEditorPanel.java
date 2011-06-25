@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.openide.util.lookup.InstanceContent;
 
 /**
  *
@@ -27,7 +28,7 @@ public class TaskEditorPanel extends javax.swing.JPanel {
 
     public Task task = new TaskImpl();
     private boolean noUpdate = false;
-    private static final String PROP_TASK = "TASK";
+    public static final String PROP_TASK = "TASK";
     private PropertyChangeSupport pcs;
     private DocumentListener docListener = new DocumentListener() {
 

@@ -4,13 +4,17 @@
  */
 package com.netbeansrcp.taskeditor;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.util.Lookup;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.Lookups;
 
 /**
@@ -28,11 +32,32 @@ persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 preferredID = "TaskEditorTopComponent")
 public final class TaskEditorTopComponent extends TopComponent {
 
+    private InstanceContent ic = new InstanceContent();
+    private PropertyChangeListener taskChangeListener = new ListenForTaskChanges();
+
+    private class ListenForTaskChanges implements PropertyChangeListener {
+
+        public ListenForTaskChanges() {
+        }
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (TaskEditorPanel.PROP_TASK.equals(evt.getPropertyName())) {
+                List newContent = new ArrayList();
+                newContent.add(taskEditorPanel1.task);
+                ic.set(newContent, null);
+            }
+        }
+    }
+
     public TaskEditorTopComponent() {
         initComponents();
+        taskEditorPanel1.addPropertyChangeListener(taskChangeListener);
+        ic.add(taskEditorPanel1.task);
+        associateLookup(new AbstractLookup(ic));
         setName(NbBundle.getMessage(TaskEditorTopComponent.class, "CTL_TaskEditorTopComponent"));
         setToolTipText(NbBundle.getMessage(TaskEditorTopComponent.class, "HINT_TaskEditorTopComponent"));
-        associateLookup(Lookups.singleton(((TaskEditorPanel) taskEditorPanel1).task));
+//        associateLookup(Lookups.singleton(((TaskEditorPanel) taskEditorPanel1).task));
     }
 
     /** This method is called from within the constructor to
