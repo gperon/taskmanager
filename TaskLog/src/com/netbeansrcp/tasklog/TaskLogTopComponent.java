@@ -5,7 +5,6 @@
 package com.netbeansrcp.tasklog;
 
 import com.netbeansrcp.taskmodel.api.Task;
-import com.netbeansrcp.tasksource.api.TaskSource;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
@@ -19,6 +18,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.util.Lookup;
 import org.openide.util.LookupListener;
+import org.openide.util.Utilities;
 
 /**
  * Top component which displays something.
@@ -81,7 +81,7 @@ public final class TaskLogTopComponent extends TopComponent implements PropertyC
 
     @Override
     public void componentOpened() {
-        result = Lookup.getDefault().lookup(TaskSource.class).getLookup().lookupResult(Task.class);
+        result = Utilities.actionsGlobalContext().lookupResult(Task.class);
         result.addLookupListener(this);
         for (Task task : result.allInstances()) {
             listModel.addElement(task);

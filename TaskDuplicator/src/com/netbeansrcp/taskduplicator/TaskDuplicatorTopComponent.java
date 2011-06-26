@@ -6,6 +6,7 @@ package com.netbeansrcp.taskduplicator;
 
 import com.netbeansrcp.taskmodel.TaskImpl;
 import com.netbeansrcp.taskmodel.api.Task;
+import com.netbeansrcp.taskmodel.api.TaskManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
@@ -162,15 +163,19 @@ public final class TaskDuplicatorTopComponent extends TopComponent implements Pr
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Task t = new TaskImpl();
-        t.setName(task.getName());
-        t.setDue(task.getDue());
-        t.setPrio(task.getPrio());
-        t.setProgr(task.getProgr());
-        t.setDescr(task.getDescr());
-        List<Task> tasks = new ArrayList<Task>();
-        tasks.add(t);
-        ic.set(tasks, null);
+        TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
+        if (taskMgr != null) {
+//        Task t = new TaskImpl();
+            Task t = taskMgr.createTask();
+            t.setName(task.getName());
+            t.setDue(task.getDue());
+            t.setPrio(task.getPrio());
+            t.setProgr(task.getProgr());
+            t.setDescr(task.getDescr());
+            List<Task> tasks = new ArrayList<Task>();
+            tasks.add(t);
+            ic.set(tasks, null);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

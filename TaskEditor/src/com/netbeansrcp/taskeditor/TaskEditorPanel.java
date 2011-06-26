@@ -12,13 +12,14 @@ package com.netbeansrcp.taskeditor;
 
 import com.netbeansrcp.taskmodel.TaskImpl;
 import com.netbeansrcp.taskmodel.api.Task;
+import com.netbeansrcp.taskmodel.api.TaskManager;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.openide.util.lookup.InstanceContent;
+import org.openide.util.Lookup;
 
 /**
  *
@@ -27,6 +28,7 @@ import org.openide.util.lookup.InstanceContent;
 public class TaskEditorPanel extends javax.swing.JPanel {
 
     public Task task = new TaskImpl();
+    private TaskManager taskMgr;
     private boolean noUpdate = false;
     public static final String PROP_TASK = "TASK";
     private PropertyChangeSupport pcs;
@@ -50,8 +52,15 @@ public class TaskEditorPanel extends javax.swing.JPanel {
 
     /** Creates new form TaskEditorPanel */
     public TaskEditorPanel() {
+        if (taskMgr == null) {
+            taskMgr = Lookup.getDefault().lookup(TaskManager.class);
+        }
+        if (taskMgr != null) {
+            task = taskMgr.createTask();
+        }
         initComponents();
         updateForm();
+        pcs = new PropertyChangeSupport(this);
     }
 
     /** This method is called from within the constructor to
