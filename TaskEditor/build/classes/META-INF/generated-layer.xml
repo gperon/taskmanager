@@ -38,11 +38,52 @@
             </folder>
         </folder>
     </folder>
+    <folder name="Actions">
+        <folder name="Edit">
+            <file name="com-netbeansrcp-taskeditor-NewTaskAction.instance">
+                <!--com.netbeansrcp.taskeditor.NewTaskAction-->
+                <attr
+                    bundlevalue="com.netbeansrcp.taskeditor.Bundle#CTL_NewTaskAction" name="displayName"/>
+                <attr
+                    methodvalue="org.openide.awt.Actions.alwaysEnabled" name="instanceCreate"/>
+                <attr name="delegate" newvalue="com.netbeansrcp.taskeditor.NewTaskAction"/>
+                <attr name="iconBase" stringvalue="com/netbeansrcp/taskeditor/list-add.png"/>
+                <attr boolvalue="false" name="noIconInMenu"/>
+            </file>
+        </folder>
+        <folder name="Window">
+            <file name="com-netbeansrcp-taskeditor-TaskEditorTopComponent.instance">
+                <!--com.netbeansrcp.taskeditor.TaskEditorTopComponent-->
+                <attr
+                    methodvalue="org.openide.windows.TopComponent.openAction" name="instanceCreate"/>
+                <attr name="component" newvalue="com.netbeansrcp.taskeditor.TaskEditorTopComponent"/>
+                <attr name="preferredID" stringvalue="TaskEditorTopComponent"/>
+                <attr
+                    bundlevalue="com.netbeansrcp.taskeditor.Bundle#CTL_TaskEditorAction" name="displayName"/>
+            </file>
+        </folder>
+    </folder>
     <folder name="Menu">
+        <folder name="Edit">
+            <file name="com-netbeansrcp-taskeditor-NewTaskAction.shadow">
+                <!--com.netbeansrcp.taskeditor.NewTaskAction-->
+                <attr name="originalFile" stringvalue="Actions/Edit/com-netbeansrcp-taskeditor-NewTaskAction.instance"/>
+                <attr intvalue="100" name="position"/>
+            </file>
+        </folder>
         <folder name="Window">
             <file name="com-netbeansrcp-taskeditor-TaskEditorTopComponent.shadow">
                 <!--com.netbeansrcp.taskeditor.TaskEditorTopComponent-->
                 <attr name="originalFile" stringvalue="Actions/Window/com-netbeansrcp-taskeditor-TaskEditorTopComponent.instance"/>
+            </file>
+        </folder>
+    </folder>
+    <folder name="Toolbars">
+        <folder name="Edit">
+            <file name="com-netbeansrcp-taskeditor-NewTaskAction.shadow">
+                <!--com.netbeansrcp.taskeditor.NewTaskAction-->
+                <attr name="originalFile" stringvalue="Actions/Edit/com-netbeansrcp-taskeditor-NewTaskAction.instance"/>
+                <attr intvalue="100" name="position"/>
             </file>
         </folder>
     </folder>
@@ -69,17 +110,10 @@
             </folder>
         </folder>
     </folder>
-    <folder name="Actions">
-        <folder name="Window">
-            <file name="com-netbeansrcp-taskeditor-TaskEditorTopComponent.instance">
-                <!--com.netbeansrcp.taskeditor.TaskEditorTopComponent-->
-                <attr
-                    methodvalue="org.openide.windows.TopComponent.openAction" name="instanceCreate"/>
-                <attr name="component" newvalue="com.netbeansrcp.taskeditor.TaskEditorTopComponent"/>
-                <attr name="preferredID" stringvalue="TaskEditorTopComponent"/>
-                <attr
-                    bundlevalue="com.netbeansrcp.taskeditor.Bundle#CTL_TaskEditorAction" name="displayName"/>
-            </file>
-        </folder>
+    <folder name="Shortcuts">
+        <file name="D-A.shadow">
+            <!--com.netbeansrcp.taskeditor.NewTaskAction-->
+            <attr name="originalFile" stringvalue="Actions/Edit/com-netbeansrcp-taskeditor-NewTaskAction.instance"/>
+        </file>
     </folder>
 </filesystem>

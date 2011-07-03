@@ -28,7 +28,6 @@ import org.openide.util.Lookup;
 public class TaskEditorPanel extends javax.swing.JPanel {
 
     public Task task = new TaskImpl();
-    private TaskManager taskMgr;
     private boolean noUpdate = false;
     public static final String PROP_TASK = "TASK";
     private PropertyChangeSupport pcs;
@@ -52,14 +51,8 @@ public class TaskEditorPanel extends javax.swing.JPanel {
 
     /** Creates new form TaskEditorPanel */
     public TaskEditorPanel() {
-        if (taskMgr == null) {
-            taskMgr = Lookup.getDefault().lookup(TaskManager.class);
-        }
-        if (taskMgr != null) {
-            task = taskMgr.createTask();
-        }
         initComponents();
-        updateForm();
+//        updateForm();
         pcs = new PropertyChangeSupport(this);
     }
 
@@ -283,6 +276,13 @@ public class TaskEditorPanel extends javax.swing.JPanel {
         this.task.setProgr(this.jSliderProgress.getValue());
         this.task.setDescr(this.jTextAreaDescription.getText());
 
+    }
+
+    public void updateTask(Task task) {
+        Task oldTask = this.task;
+        this.task = task;
+        pcs.firePropertyChange(PROP_TASK, oldTask, task);
+        updateForm();
     }
 
     private void updateForm() {

@@ -4,18 +4,22 @@
  */
 package com.netbeansrcp.taskeditor;
 
+import com.netbeansrcp.taskmodel.api.Task;
+import com.netbeansrcp.taskmodel.api.TaskManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Lookup;
 import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
-import org.openide.util.lookup.Lookups;
 
 /**
  * Top component which displays something.
@@ -34,6 +38,8 @@ public final class TaskEditorTopComponent extends TopComponent {
 
     private InstanceContent ic = new InstanceContent();
     private PropertyChangeListener taskChangeListener = new ListenForTaskChanges();
+    private static Map<Task, TaskEditorTopComponent> tcByTask = new HashMap<Task, TaskEditorTopComponent>();
+    private static TaskManager taskMgr;
 
     private class ListenForTaskChanges implements PropertyChangeListener {
 
@@ -50,14 +56,24 @@ public final class TaskEditorTopComponent extends TopComponent {
         }
     }
 
-    public TaskEditorTopComponent() {
+    private TaskEditorTopComponent() {
+        this(Lookup.getDefault().lookup(TaskManager.class));
+    }
+
+    private TaskEditorTopComponent(TaskManager taskMgr) {
+        this(taskMgr != null ? taskMgr.createTask() : null);
+    }
+
+    private TaskEditorTopComponent(Task task) {
         initComponents();
+        taskEditorPanel1.updateTask(task);
         taskEditorPanel1.addPropertyChangeListener(taskChangeListener);
         ic.add(taskEditorPanel1.task);
         associateLookup(new AbstractLookup(ic));
         setName(NbBundle.getMessage(TaskEditorTopComponent.class, "CTL_TaskEditorTopComponent"));
         setToolTipText(NbBundle.getMessage(TaskEditorTopComponent.class, "HINT_TaskEditorTopComponent"));
 //        associateLookup(Lookups.singleton(((TaskEditorPanel) taskEditorPanel1).task));
+        tcByTask.put(task, this);
     }
 
     /** This method is called from within the constructor to
@@ -105,5 +121,38 @@ public final class TaskEditorTopComponent extends TopComponent {
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+    }
+
+    public static TaskEditorTopComponent findInstance(Task task) {
+        TaskEditorTopComponent tc = tcByTask.get(task);
+        if (tc == null) {
+            tc = new TaskEditorTopComponent(task);
+        }
+        if (taskMgr == null) {
+            taskMgr = Lookup.getDefault().lookup(TaskManager.class);
+            taskMgr.addPropertyChangeListener(new ListenForRemovedNodes());
+        }
+        return tc;
+    }
+
+    private static class ListenForRemovedNodes implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (TaskManager.PROP_TASKLIST_REMOVE.equals(evt.getPropertyName())) {
+                Task task = (Task) evt.getNewValue();
+                TaskEditorTopComponent tc = tcByTask.get(task);
+                if (tc != null) {
+                    tc.close();
+                    tcByTask.remove(task);
+                }
+
+            }
+        }
+    }
+
+    public String getTaskId() {
+        Task task = taskEditorPanel1.task;
+        return task == null ? "" : task.getId();
     }
 }
