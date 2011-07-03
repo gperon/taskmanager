@@ -87,6 +87,12 @@
             </file>
         </folder>
     </folder>
+    <folder name="Shortcuts">
+        <file name="D-A.shadow">
+            <!--com.netbeansrcp.taskeditor.NewTaskAction-->
+            <attr name="originalFile" stringvalue="Actions/Edit/com-netbeansrcp-taskeditor-NewTaskAction.instance"/>
+        </file>
+    </folder>
     <folder name="Windows2">
         <folder name="Components">
             <file name="TaskEditorTopComponent.settings">
@@ -109,11 +115,5 @@
 ]]></file>
             </folder>
         </folder>
-    </folder>
-    <folder name="Shortcuts">
-        <file name="D-A.shadow">
-            <!--com.netbeansrcp.taskeditor.NewTaskAction-->
-            <attr name="originalFile" stringvalue="Actions/Edit/com-netbeansrcp-taskeditor-NewTaskAction.instance"/>
-        </file>
     </folder>
 </filesystem>
