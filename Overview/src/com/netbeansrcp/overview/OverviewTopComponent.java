@@ -7,7 +7,6 @@ package com.netbeansrcp.overview;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import org.openide.explorer.view.ListView;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -15,6 +14,7 @@ import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
+import org.openide.explorer.view.BeanTreeView;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Node;
 import org.openide.util.Lookup;
@@ -49,7 +49,7 @@ public final class OverviewTopComponent extends TopComponent implements Explorer
         em.getRootContext().setDisplayName("Overview");
         setName(NbBundle.getMessage(OverviewTopComponent.class, "CTL_OverviewTopComponent"));
         setToolTipText(NbBundle.getMessage(OverviewTopComponent.class, "HINT_OverviewTopComponent"));
-
+        ((BeanTreeView) jScrollPane1).setRootVisible(false);
     }
 
     @Override
@@ -65,7 +65,8 @@ public final class OverviewTopComponent extends TopComponent implements Explorer
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new ListView();
+        jScrollPane1 = //new ListView();
+        new BeanTreeView();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

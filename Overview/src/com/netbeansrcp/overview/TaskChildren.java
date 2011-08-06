@@ -27,6 +27,10 @@ public class TaskChildren extends Children.Keys<Task> implements PropertyChangeL
     @Override
     protected void addNotify() {
         super.addNotify();
+        try {
+            Thread.sleep(30000);
+        } catch (Exception e) {
+        }
         setKeys(task.getChildren());
     }
 
