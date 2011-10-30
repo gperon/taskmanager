@@ -12,14 +12,12 @@ package com.netbeansrcp.taskeditor;
 
 import com.netbeansrcp.taskmodel.TaskImpl;
 import com.netbeansrcp.taskmodel.api.Task;
-import com.netbeansrcp.taskmodel.api.TaskManager;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.openide.util.Lookup;
 
 /**
  *

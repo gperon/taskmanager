@@ -43,7 +43,7 @@ public final class TaskDuplicatorTopComponent extends TopComponent implements Pr
     private Task task;
     private InstanceContent ic = new InstanceContent();
 
-    private TaskDuplicatorTopComponent() {
+    public TaskDuplicatorTopComponent() {
         initComponents();
         setName(NbBundle.getMessage(TaskDuplicatorTopComponent.class, "CTL_TaskDuplicatorTopComponent"));
         setToolTipText(NbBundle.getMessage(TaskDuplicatorTopComponent.class, "HINT_TaskDuplicatorTopComponent"));

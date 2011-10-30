@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="Tasks">
+        <folder name="Nodes">
+            <folder name="Task">
+                <folder name="Actions">
+                    <file name="com-netbeansrcp-taskactions-AddNewTaskAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-AddNewTaskAction.instance"/>
+                        <attr name="position" intvalue="100"/>
+                    </file>
+                    <file name="com-netbeansrcp-taskactions-AddDuplicteTaskAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-AddDuplicateTaskAction.instance"/>
+                        <attr name="position" intvalue="200"/>
+                    </file>
+                    <file name="Separator0.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>    
+                        <attr name="position" intvalue="300"/>
+                    </file>
+                    <file name="com-netbeansrcp-taskactions-EditTaskAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-EditTaskAction.instance"/>   
+                        <attr name="position" intvalue="400"/>
+                    </file>
+                    <file name="Separator1.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>    
+                        <attr name="position" intvalue="500"/>
+                    </file>
+                    <file name="com-netbeansrcp-taskactions-RemoveTaskAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-RemoveTaskAction.instance"/>   
+                        <attr name="position" intvalue="600"/>
+                    </file>
+                    <file name="Separator2.instance">
+                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>    
+                        <attr name="position" intvalue="700"/>
+                    </file>
+                </folder>
+                <folder name="PreferredAction">
+                    <file name="com-netbeansrcp-taskactions-EditTaskAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-EditTaskAction.instance"/>   
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+</filesystem>
