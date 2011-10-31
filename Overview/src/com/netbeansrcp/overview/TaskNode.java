@@ -7,12 +7,16 @@ package com.netbeansrcp.overview;
 import com.netbeansrcp.taskmodel.api.Task;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.swing.Action;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
+import org.openide.nodes.PropertySupport;
+import org.openide.nodes.Sheet;
 import org.openide.util.Lookup;
 import org.openide.util.Utilities;
 import org.openide.util.lookup.Lookups;
@@ -88,5 +92,89 @@ public class TaskNode extends AbstractNode implements PropertyChangeListener {
             registeredActions = Utilities.actionsForPath("Tasks/Nodes/Task/Actions");
         }
         return registeredActions;
+    }
+
+    @Override
+    protected Sheet createSheet() {
+        final Task task = getLookup().lookup(Task.class);
+        Sheet sheet = Sheet.createDefault();
+        Sheet.Set setProps = sheet.createPropertiesSet();
+        setProps.setDisplayName("identification");
+        sheet.put(setProps);
+
+        Property<String> idProp = new PropertySupport.ReadOnly<String>("id", String.class, "ID", "identification number") {
+
+            @Override
+            public String getValue() throws IllegalAccessException, InvocationTargetException {
+                return (task != null) ? task.getId() : "";
+            }
+        };
+        Property<String> parentIdProp = new PropertySupport.ReadOnly<String>("parent-id", String.class, "parent-ID", "identification number of parent task") {
+
+            @Override
+            public String getValue() throws IllegalAccessException, InvocationTargetException {
+                return (task != null) ? task.getParentId() : "";
+            }
+        };
+        setProps.put(idProp);
+        setProps.put(parentIdProp);
+
+        Sheet.Set setExp = sheet.createExpertSet();
+        setExp.setDisplayName("properties");
+        sheet.put(setExp);
+        try {
+            Property nameProp = new PropertySupport.Reflection<String>(task, String.class, "name");
+            nameProp.setName("name");
+            nameProp.setDisplayName("name");
+            nameProp.setShortDescription("name");
+
+            Property dueProp = new PropertySupport.Reflection<Date>(task, Date.class, "due");
+            dueProp.setName("due");
+            dueProp.setDisplayName("due date");
+            dueProp.setShortDescription("due date");
+
+            PropertySupport.Reflection<Task.Priority> prioProp = new PropertySupport.Reflection<Task.Priority>(task, Task.Priority.class, "prio");
+            prioProp.setName("prio");
+            prioProp.setDisplayName("priority");
+            prioProp.setShortDescription("priority");
+            prioProp.setPropertyEditorClass(PriorityEditor.class);
+
+            Property progrProp = new PropertySupport.ReadWrite("prog", Integer.class, "Progress", "Progress") {
+
+                @Override
+                public Object getValue() throws IllegalAccessException, InvocationTargetException {
+                    return task != null ? task.getProgr() : 0;
+                }
+
+                @Override
+                public void setValue(Object val) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+                    if (task != null && val instanceof Integer) {
+                        task.setProgr(((Integer) val).intValue());
+                    }
+                }
+            };
+            setExp.put(nameProp);
+            setExp.put(dueProp);
+            setExp.put(prioProp);
+            setExp.put(progrProp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Sheet.Set setDescr = new Sheet.Set();
+        setDescr.setName("description");
+        setDescr.setValue("tabName", " description ");
+        sheet.put(setDescr);
+        try {
+            Property descrProp = new PropertySupport.Reflection<String>(task, String.class, "descr");
+            descrProp.setName("descr");
+            descrProp.setDisplayName("description");
+            descrProp.setShortDescription("description");
+            setDescr.put(descrProp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sheet;
     }
 }

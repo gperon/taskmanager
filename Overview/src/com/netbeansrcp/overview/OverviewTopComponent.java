@@ -50,6 +50,7 @@ public final class OverviewTopComponent extends TopComponent implements Explorer
         setName(NbBundle.getMessage(OverviewTopComponent.class, "CTL_OverviewTopComponent"));
         setToolTipText(NbBundle.getMessage(OverviewTopComponent.class, "HINT_OverviewTopComponent"));
         ((BeanTreeView) jScrollPane1).setRootVisible(false);
+        ((BeanTreeView) jScrollPane1).setDragSource(true);
     }
 
     @Override

@@ -12,12 +12,14 @@ package com.netbeansrcp.taskeditor;
 
 import com.netbeansrcp.taskmodel.TaskImpl;
 import com.netbeansrcp.taskmodel.api.Task;
+import com.netbeansrcp.taskmodel.api.TaskManager;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.DateFormat;
 import java.util.Date;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.openide.util.Lookup;
 
 /**
  *
@@ -25,7 +27,9 @@ import javax.swing.event.DocumentListener;
  */
 public class TaskEditorPanel extends javax.swing.JPanel {
 
-    public Task task = new TaskImpl();
+//    public Task task = new TaskImpl();
+    public Task task;
+//    private TaskManager taskMgr;
     private boolean noUpdate = false;
     public static final String PROP_TASK = "TASK";
     private PropertyChangeSupport pcs;
@@ -49,6 +53,12 @@ public class TaskEditorPanel extends javax.swing.JPanel {
 
     /** Creates new form TaskEditorPanel */
     public TaskEditorPanel() {
+//        if (taskMgr==null) {
+//            Lookup.getDefault().lookup(TaskManager.class);
+//        }
+//        if (taskMgr != null) {
+//            task = taskMgr.createTask();
+//        }
         initComponents();
 //        updateForm();
         pcs = new PropertyChangeSupport(this);
@@ -217,12 +227,12 @@ public class TaskEditorPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jSliderProgressStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Task oldTask = task;
-        task = new TaskImpl();
-        if (pcs == null) {
-            pcs = new PropertyChangeSupport(this);
-        }
-        pcs.firePropertyChange(PROP_TASK, oldTask, task);
+//        Task oldTask = task;
+//        task = new TaskImpl();
+//        if (pcs == null) {
+//            pcs = new PropertyChangeSupport(this);
+//        }
+//        pcs.firePropertyChange(PROP_TASK, oldTask, task);
         updateForm();
     }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

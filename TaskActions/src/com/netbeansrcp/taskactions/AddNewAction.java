@@ -25,7 +25,7 @@ import org.openide.util.LookupListener;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.actions.Presenter;
 
-@ActionID(category = "Edit",
+@ActionID(category = "Task",
 id = "com.netbeansrcp.taskactions.AddNewTaskAction")
 @ActionRegistration(iconBase = "com/netbeansrcp/taskactions/document-new.png",
 displayName = "#CTL_AddNewTaskAction")

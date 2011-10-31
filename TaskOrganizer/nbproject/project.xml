@@ -3,7 +3,7 @@
     <type>org.netbeans.modules.apisupport.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
-            <code-name-base>com.netbeansrcp.overview</code-name-base>
+            <code-name-base>com.netbeansrcp.taskorganizer</code-name-base>
             <suite-component/>
             <module-dependencies>
                 <dependency>
@@ -15,12 +15,11 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
-                    <code-name-base>org.netbeans.api.progress</code-name-base>
+                    <code-name-base>org.netbeans.api.visual</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <release-version>1</release-version>
-                        <specification-version>1.23.1</specification-version>
+                        <specification-version>2.27.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -38,14 +37,6 @@
                     <compile-dependency/>
                     <run-dependency>
                         <specification-version>7.30.1</specification-version>
-                    </run-dependency>
-                </dependency>
-                <dependency>
-                    <code-name-base>org.openide.explorer</code-name-base>
-                    <build-prerequisite/>
-                    <compile-dependency/>
-                    <run-dependency>
-                        <specification-version>6.34.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -81,9 +72,7 @@
                     </run-dependency>
                 </dependency>
             </module-dependencies>
-            <public-packages>
-                <package>com.netbeansrcp.overview</package>
-            </public-packages>
+            <public-packages/>
         </data>
     </configuration>
 </project>
