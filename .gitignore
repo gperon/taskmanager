@@ -6,3 +6,5 @@
 /TaskEditor/nbproject/private/
 build
 private
+*~
+.directory
