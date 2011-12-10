@@ -30,7 +30,7 @@ public final class NewTaskAction implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
         if (taskMgr != null) {
-            Task task = taskMgr.createTask();
+            Task task = taskMgr.createTask().getLookup().lookup(Task.class);
             TaskEditorTopComponent win = TaskEditorTopComponent.findInstance(task);
             win.open();
             win.requestActive();

@@ -4,7 +4,9 @@
  */
 package com.netbeansrcp.overview;
 
+import com.netbeansrcp.taskactions.SaveAction;
 import com.netbeansrcp.taskmodel.api.Task;
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
@@ -13,11 +15,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.swing.Action;
+import org.openide.cookies.SaveCookie;
 import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
+import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
 import org.openide.util.Utilities;
 import org.openide.util.lookup.Lookups;
 
@@ -25,9 +31,11 @@ import org.openide.util.lookup.Lookups;
  *
  * @author gperon
  */
-public class TaskNode extends AbstractNode implements PropertyChangeListener {
+public class TaskNode extends AbstractNode implements PropertyChangeListener, LookupListener {
 
     static List<? extends Action> registeredActions;
+    private Lookup.Result result;
+    private boolean saveable = false;
 
     public TaskNode(Task task) {
         this(task, Lookups.singleton(task));
@@ -42,8 +50,11 @@ public class TaskNode extends AbstractNode implements PropertyChangeListener {
         super(Children.create(new TaskChildFactory(task), true), lookup);
         setName(task.getId());
         setDisplayName(task.getName());
-        setIconBaseWithExtension("com/netbeansrcp/overview/Task.png");
-        addPropertyChangeListener(this);
+        setIconBaseWithExtension("com/netbeansrcp/overview/contact-new.png");
+        task.addPropertyChangeListener(this);
+//        result = getLookup().lookup(SaveCookie.class);
+        result = getLookup().lookupResult(SaveCookie.class);
+        result.addLookupListener(this);
     }
 
     @Override
@@ -55,22 +66,22 @@ public class TaskNode extends AbstractNode implements PropertyChangeListener {
 
     @Override
     public String getHtmlDisplayName() {
-        String html = "<font color='";
+        String html = "<font color=\"";
         Task task = getLookup().lookup(Task.class);
         switch (task.getPrio()) {
             case LOW:
-                html += "0000FF"; // blue
+                html += "#0000FF"; // blue
                 break;
             case MEDIUM:
-                html += "000000"; // black
+                html += "#000000"; // black
                 break;
             case HIGH:
-                html += "FF0000"; // red
+                html += "#FF0000"; // red
                 break;
             default:
                 throw new AssertionError();
         }
-        html += "'>" + task.getName() + "<font/>";
+        html += "\">" + task.getName() + " <font/>";
         return html;
     }
 
@@ -79,7 +90,10 @@ public class TaskNode extends AbstractNode implements PropertyChangeListener {
         List<Action> actions = new ArrayList<Action>();
         actions.addAll(getRegisteredActions());
         actions.addAll(Arrays.asList(super.getActions(context)));
+//        actions.add(new SaveAction());
+        actions.add(null);
         return actions.toArray(new Action[actions.size()]);
+
     }
 
     @Override
@@ -176,5 +190,28 @@ public class TaskNode extends AbstractNode implements PropertyChangeListener {
         }
 
         return sheet;
+    }
+
+    @Override
+    public void resultChanged(LookupEvent ev) {
+        SaveCookie save = getLookup().lookup(SaveCookie.class);
+        if (!saveable && save != null) {
+            saveable = true;
+            fireIconChange();
+        }
+        if (saveable && save == null) {
+            saveable = false;
+            fireIconChange();
+        }
+    }
+
+    @Override
+    public Image getIcon(int type) {
+        Image std = super.getIcon(type);
+        if (saveable) {
+            Image badge = ImageUtilities.loadImage("com/netbeansrcp/taskactions/media-record.png");
+            return ImageUtilities.mergeImages(std, badge, 5, 5);
+        }
+        return std;
     }
 }

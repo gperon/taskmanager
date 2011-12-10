@@ -27,29 +27,29 @@ public class TaskChildFactory extends ChildFactory<Task> implements PropertyChan
     }
 
     protected boolean createKeys(List<Task> arg0) {
-        final long delay = 500;
-        ProgressHandle handle = ProgressHandleFactory.createHandle("creating subtasks...");
-        handle.start(100);
-        try {
-            Thread.sleep(delay);
-        } catch (Exception e) {
-        }
-        handle.progress(25);
-        try {
-            Thread.sleep(delay);
-        } catch (Exception e) {
-        }
-        handle.progress(50);
-        try {
-            Thread.sleep(delay);
-        } catch (Exception e) {
-        }
-        handle.progress(75);
-        try {
-            Thread.sleep(delay);
-        } catch (Exception e) {
-        }
-        handle.finish();
+//        final long delay = 500;
+//        ProgressHandle handle = ProgressHandleFactory.createHandle("creating subtasks...");
+//        handle.start(100);
+//        try {
+//            Thread.sleep(delay);
+//        } catch (Exception e) {
+//        }
+//        handle.progress(25);
+//        try {
+//            Thread.sleep(delay);
+//        } catch (Exception e) {
+//        }
+//        handle.progress(50);
+//        try {
+//            Thread.sleep(delay);
+//        } catch (Exception e) {
+//        }
+//        handle.progress(75);
+//        try {
+//            Thread.sleep(delay);
+//        } catch (Exception e) {
+//        }
+//        handle.finish();
         arg0.addAll(task.getChildren());
         return true;
 

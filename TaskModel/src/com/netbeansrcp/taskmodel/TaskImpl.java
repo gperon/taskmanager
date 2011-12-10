@@ -6,18 +6,16 @@
  *
  *
  */
-
-
-
 /*
-* To change this template, choose Tools | Templates
-* and open the template in the editor.
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.netbeansrcp.taskmodel;
 
 import com.netbeansrcp.taskidgenerator.api.TaskIdGenerator;
 import com.netbeansrcp.taskmodel.api.Task;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -34,7 +32,8 @@ import org.openide.util.Lookup;
  *
  * @author gperon
  */
-public class TaskImpl implements Task {
+public class TaskImpl implements Task, PropertyChangeListener {
+    
     private String id = "";
     private String name = "";
     private String parentId = "";
@@ -43,7 +42,7 @@ public class TaskImpl implements Task {
     private int progr = 0;
     private String descr = "";
     private List<Task> children = new ArrayList<Task>();
-    private PropertyChangeSupport pss;
+    private PropertyChangeSupport pcs;
 
     /**
      * Constructs ...
@@ -62,7 +61,7 @@ public class TaskImpl implements Task {
      */
     public TaskImpl(String name, String parentId) {
         TaskIdGenerator idGen =
-            Lookup.getDefault().lookup(com.netbeansrcp.taskidgenerator.api.TaskIdGenerator.class);
+                Lookup.getDefault().lookup(com.netbeansrcp.taskidgenerator.api.TaskIdGenerator.class);
         this.id = idGen.generateId();
         this.name = name;
         this.parentId = parentId;
@@ -71,7 +70,7 @@ public class TaskImpl implements Task {
         this.progr = 0;
         this.descr = "";
         this.children = new ArrayList<Task>();
-        this.pss = new PropertyChangeSupport(this);
+        this.pcs = new PropertyChangeSupport(this);
     }
 
     /**
@@ -103,7 +102,7 @@ public class TaskImpl implements Task {
     public void setName(String name) {
         String old = this.name;
         this.name = name;
-        this.pss.firePropertyChange(PROP_NAME, old, name);
+        this.pcs.firePropertyChange(PROP_NAME, old, name);
     }
 
     /**
@@ -135,7 +134,7 @@ public class TaskImpl implements Task {
     public void setDue(Date due) {
         Date old = this.due;
         this.due = due;
-        this.pss.firePropertyChange(PROP_DUE, old, due);
+        this.pcs.firePropertyChange(PROP_DUE, old, due);
     }
 
     /**
@@ -157,7 +156,7 @@ public class TaskImpl implements Task {
     public void setPrio(Priority prio) {
         Priority old = this.prio;
         this.prio = prio;
-        this.pss.firePropertyChange(PROP_PRIO, old, prio);
+        this.pcs.firePropertyChange(PROP_PRIO, old, prio);
     }
 
     /**
@@ -179,7 +178,7 @@ public class TaskImpl implements Task {
     public void setProgr(int progr) {
         int old = this.progr;
         this.progr = progr;
-        this.pss.firePropertyChange(PROP_PROGR, old, progr);
+        this.pcs.firePropertyChange(PROP_PROGR, old, progr);
     }
 
     /**
@@ -201,7 +200,7 @@ public class TaskImpl implements Task {
     public void setDescr(String descr) {
         String old = this.descr;
         this.descr = descr;
-        this.pss.firePropertyChange(PROP_DESCR, old, descr);
+        this.pcs.firePropertyChange(PROP_DESCR, old, descr);
     }
 
     /**
@@ -222,7 +221,7 @@ public class TaskImpl implements Task {
      */
     public void addChild(Task subTask) {
         this.children.add(subTask);
-        this.pss.firePropertyChange(PROP_CHILDREN_ADD, null, this.children);
+        this.pcs.firePropertyChange(PROP_CHILDREN_ADD, null, this.children);
     }
 
     /**
@@ -235,8 +234,9 @@ public class TaskImpl implements Task {
      */
     public boolean remove(Task subTask) {
         boolean res = this.children.remove(subTask);
-        this.pss.firePropertyChange(PROP_CHILDREN_REMOVE, null, this.children);
-
+        subTask.removePropertyChangeListener(this);
+        this.pcs.firePropertyChange(PROP_CHILDREN_REMOVE, null, this.children);
+        
         return res;
     }
 
@@ -247,7 +247,7 @@ public class TaskImpl implements Task {
      * @param listener
      */
     public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-        this.pss.addPropertyChangeListener(listener);
+        this.pcs.addPropertyChangeListener(listener);
     }
 
     /**
@@ -257,7 +257,7 @@ public class TaskImpl implements Task {
      * @param listener
      */
     public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-        this.pss.removePropertyChangeListener(listener);
+        this.pcs.removePropertyChangeListener(listener);
     }
 
     /**
@@ -277,7 +277,7 @@ public class TaskImpl implements Task {
             return false;
         }
         final TaskImpl other = (TaskImpl) obj;
-
+        
         return this.id.equals(other.getId());
     }
 
@@ -291,7 +291,7 @@ public class TaskImpl implements Task {
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + ((this.id != null) ? this.id.hashCode() : 0);
-
+        
         return hash;
     }
 
@@ -303,8 +303,16 @@ public class TaskImpl implements Task {
      */
     @Override
     public String toString() {
+//        return "Task{id=" + getId() + ", parentId=" + this.parentId + ", name=" + this.getName() + ", due="
+//                + DateFormat.getInstance().format(this.due) + ", prio=" + this.prio + ", prog=" + this.progr
+//                + ", descr=" + this.descr + "}";
         return this.getId() + " - " + this.parentId + " - " + this.getName() + " - "
-               + DateFormat.getInstance().format(this.due) + " - " + this.prio + " - " + this.progr
-               + " - " + this.descr;
+                + DateFormat.getInstance().format(this.due) + " - " + this.prio + " - " + this.progr
+                + " - " + this.descr;
+    }
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        pcs.firePropertyChange(PROP_CHILDREN_MODIFICATION, evt.getOldValue(), evt.getNewValue());
     }
 }

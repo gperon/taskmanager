@@ -25,7 +25,7 @@ import org.openide.util.Lookup;
 @ConvertAsProperties(dtd = "-//com.netbeansrcp.overview//Overview//EN",
 autostore = false)
 @TopComponent.Description(preferredID = "OverviewTopComponent",
-//iconBase="SET/PATH/TO/ICON/HERE", 
+iconBase="com/netbeansrcp/overview/contact-new.png", 
 persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @TopComponent.Registration(mode = "explorer", openAtStartup = true)
 @ActionID(category = "Window", id = "com.netbeansrcp.overview.OverviewTopComponent")

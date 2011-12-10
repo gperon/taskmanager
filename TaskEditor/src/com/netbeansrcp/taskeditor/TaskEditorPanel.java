@@ -132,6 +132,7 @@ public class TaskEditorPanel extends javax.swing.JPanel {
         jSliderProgress.setMajorTickSpacing(25);
         jSliderProgress.setMinorTickSpacing(5);
         jSliderProgress.setPaintLabels(true);
+        jSliderProgress.setPaintTicks(true);
         jSliderProgress.setValue(0);
         jSliderProgress.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -208,7 +209,7 @@ public class TaskEditorPanel extends javax.swing.JPanel {
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -233,7 +234,8 @@ public class TaskEditorPanel extends javax.swing.JPanel {
 //            pcs = new PropertyChangeSupport(this);
 //        }
 //        pcs.firePropertyChange(PROP_TASK, oldTask, task);
-        updateForm();
+//        updateForm();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

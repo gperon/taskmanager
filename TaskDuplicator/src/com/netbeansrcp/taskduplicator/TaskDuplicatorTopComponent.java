@@ -166,7 +166,7 @@ public final class TaskDuplicatorTopComponent extends TopComponent implements Pr
         TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
         if (taskMgr != null) {
 //        Task t = new TaskImpl();
-            Task t = taskMgr.createTask();
+            Task t = taskMgr.createTask().getLookup().lookup(Task.class);
             t.setName(task.getName());
             t.setDue(task.getDue());
             t.setPrio(task.getPrio());

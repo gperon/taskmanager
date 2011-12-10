@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
+    <folder name="Actions">
+        <folder name="Task">
+            <file name="com-netbeansrcp-taskactions-SaveTaskAction.instance">
+                <attr name ="delegate" methodvalue="org.openide.awt.Actions.inject"/>
+                <attr name ="injectable" stringvalue="com.netbeansrcp.taskactions.SaveAction"/>
+                <attr name ="instanceCreate" methodvalue="org.openide.awt.Actions.context"/>
+                <attr name ="noIconInMenu" boolvalue="false"/>
+                <attr name ="selectionType" stringvalue="EXACTLY_ONE"/>
+                <attr name ="type" stringvalue="org.openide.cookies.SaveCookie"/>
+            </file>
+        </folder>    
+    </folder>
     <folder name="Tasks">
         <folder name="Nodes">
             <folder name="Task">
@@ -20,6 +32,10 @@
                     <file name="com-netbeansrcp-taskactions-EditTaskAction.shadow">
                         <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-EditTaskAction.instance"/>   
                         <attr name="position" intvalue="400"/>
+                    </file>
+                    <file name="com-netbeansrcp-taskactions-SaveTaskAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Task/com-netbeansrcp-taskactions-SaveTaskAction.instance"/>   
+                        <attr name="position" intvalue="450"/>
                     </file>
                     <file name="Separator1.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>    

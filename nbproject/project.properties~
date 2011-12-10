@@ -1,8 +1,0 @@
-app.name=taskmanager
-app.title=TaskManager
-branding.token=${app.name}
-modules=\
-    ${project.com.netbeansrcp.taskeditor}:\
-    ${project.com.netbeansrpc.taskmodel}
-project.com.netbeansrcp.taskeditor=TaskEditor
-project.com.netbeansrpc.taskmodel=TaskModel

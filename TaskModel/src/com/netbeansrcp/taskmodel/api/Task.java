@@ -61,4 +61,6 @@ public interface Task extends Serializable {
     public static final String PROP_CHILDREN_ADD = "children_add";
     public static final String PROP_CHILDREN_REMOVE =
             "children_remove";
+    public static final String PROP_CHILDREN_MODIFICATION =
+            "children_modified";
 }

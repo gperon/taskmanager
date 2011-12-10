@@ -61,7 +61,7 @@ public final class AddNewAction extends AbstractAction implements LookupListener
             task = result.allInstances().iterator().next();
             task = taskMgr.createTask("", task.getId());
         } else {
-            task = taskMgr.createTask();
+            task = taskMgr.createTask().getLookup().lookup(Task.class);
         }
         EditAction.openInTaskEditor(task);
     }

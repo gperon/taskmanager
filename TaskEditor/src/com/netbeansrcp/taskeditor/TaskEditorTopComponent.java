@@ -56,12 +56,12 @@ public final class TaskEditorTopComponent extends TopComponent {
         }
     }
 
-    private TaskEditorTopComponent() {
+    public TaskEditorTopComponent() {
         this(Lookup.getDefault().lookup(TaskManager.class));
     }
 
     private TaskEditorTopComponent(TaskManager taskMgr) {
-        this(taskMgr != null ? taskMgr.createTask() : null);
+        this(taskMgr != null ? taskMgr.createTask().getLookup().lookup(Task.class) : null);
     }
 
     private TaskEditorTopComponent(Task task) {

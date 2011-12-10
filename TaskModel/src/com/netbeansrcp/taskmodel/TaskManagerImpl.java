@@ -11,13 +11,19 @@ import java.beans.PropertyChangeSupport;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.BufferedOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.LocalFileSystem;
+import org.openide.loaders.DataObject;
+import org.openide.util.Exceptions;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -30,9 +36,12 @@ public class TaskManagerImpl implements TaskManager {
     private List<Task> topLevelTasks;
     private PropertyChangeSupport pcs;
     private FileObject root;
+    private Map<Task, DataObject> doByTask;
+    private boolean taskLoaded;
 
     public TaskManagerImpl() {
         topLevelTasks = new ArrayList<Task>();
+        doByTask = new HashMap<Task, DataObject>();
         pcs = new PropertyChangeSupport(this);
 
         try {
@@ -41,47 +50,47 @@ public class TaskManagerImpl implements TaskManager {
             fs.setRootDirectory(file);
             root = fs.getRoot();
         } catch (Exception e) {
-            e.printStackTrace();
+            Exceptions.printStackTrace(e);
         }
 
-        deleteTasks();
+//        deleteTasks();
 
-        /* dummy costruction */
-        Task t1 = createTask();
-        t1.setName("Todo 1");
-
-        Task t2 = createTask("Todo 1.1", t1.getId());
-        t2 = createTask("Todo 1.2", t1.getId());
-        t2 = createTask("Todo 1.3", t1.getId());
-        createTask("Todo 1.3.1", t2.getId());
-
-        t1 = createTask();
-        t1.setName("Todo 2");
-
-        t2 = createTask("Todo 2.1", t1.getId());
-        t2 = createTask("Todo 2.2", t1.getId());
-        t2 = createTask("Todo 2.3", t1.getId());
-        t1 = createTask("Todo 2.3.1", t2.getId());
-
-        t2 = createTask("Todo 2.3.1.1", t1.getId());
-        t2 = createTask("Todo 2.3.1.2", t1.getId());
-//        try {
-//            File file = new File("/tmp/tasks/");
-//            LocalFileSystem fs = new LocalFileSystem();
-//            fs.setRootDirectory(file);
-//            root = fs.getRoot();
+//        /* dummy costruction */
+//        Task t1 = createTask().getLookup().lookup(Task.class);
+//        t1.setName("Todo 1");
 //
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        save(t1);
-        save(t2);
-        System.out.println("Count of know TopLevelTasks before deleting: " + topLevelTasks.size());
-        removeTask(t1.getId());
-        removeTask(t2.getId());
-        System.out.println("Count of know TopLevelTasks after deleting: " + topLevelTasks.size());
-        loadTasks();
-        System.out.println("Count of know TopLevelTasks after loading: " + topLevelTasks.size());
+//        Task t2 = createTask("Todo 1.1", t1.getId());
+//        t2 = createTask("Todo 1.2", t1.getId());
+//        t2 = createTask("Todo 1.3", t1.getId());
+//        createTask("Todo 1.3.1", t2.getId());
+//
+//        t1 = createTask().getLookup().lookup(Task.class);
+//        t1.setName("Todo 2");
+//
+//        t2 = createTask("Todo 2.1", t1.getId());
+//        t2 = createTask("Todo 2.2", t1.getId());
+//        t2 = createTask("Todo 2.3", t1.getId());
+//        t1 = createTask("Todo 2.3.1", t2.getId());
+//
+//        t2 = createTask("Todo 2.3.1.1", t1.getId());
+//        t2 = createTask("Todo 2.3.1.2", t1.getId());
+////        try {
+////            File file = new File("/tmp/tasks/");
+////            LocalFileSystem fs = new LocalFileSystem();
+////            fs.setRootDirectory(file);
+////            root = fs.getRoot();
+////
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        }
+//        save(t1);
+//        save(t2);
+//        System.out.println("Count of know TopLevelTasks before deleting: " + topLevelTasks.size());
+//        removeTask(t1.getId());
+//        removeTask(t2.getId());
+//        System.out.println("Count of know TopLevelTasks after deleting: " + topLevelTasks.size());
+//        loadTasks();
+//        System.out.println("Count of know TopLevelTasks after loading: " + topLevelTasks.size());
 
     }
 
@@ -91,11 +100,21 @@ public class TaskManagerImpl implements TaskManager {
     }
 
     @Override
-    public synchronized Task createTask() {
-        Task task = new TaskImpl();
-        topLevelTasks.add(task);
-        pcs.firePropertyChange(PROP_TASKLIST_ADD, null, task);
-        return task;
+    public synchronized DataObject createTask() {
+        DataObject dao = null;
+        try {
+            Task task = new TaskImpl();
+            FileObject fo = save(task);
+            dao = DataObject.find(fo);
+            if (dao != null) {
+                doByTask.put(task, dao);
+            }
+            topLevelTasks.add(task);
+            pcs.firePropertyChange(PROP_TASKLIST_ADD, null, task);
+        } catch (Exception e) {
+            Exceptions.printStackTrace(e);
+        }
+        return dao;
     }
 
     @Override
@@ -122,8 +141,8 @@ public class TaskManagerImpl implements TaskManager {
     }
 
     @Override
-    public List<Task> getTopLevelTasks() {
-        return Collections.unmodifiableList(topLevelTasks);
+    public List<DataObject> getTopLevelTasks() {
+        return Collections.unmodifiableList(new ArrayList<DataObject>(doByTask.values()));
     }
 
     @Override
@@ -138,6 +157,16 @@ public class TaskManagerImpl implements TaskManager {
             Task parent = getTask(task.getParentId());
             if (parent != null) {
                 parent.remove(task);
+            } else {
+                DataObject dao = doByTask.get(task);
+                if (dao != null) {
+                    try {
+                        dao.getPrimaryFile().delete();
+                        doByTask.remove(task);
+                    } catch (Exception e) {
+                        Exceptions.printStackTrace(e);
+                    }
+                }
             }
             topLevelTasks.remove(task);
             pcs.firePropertyChange(PROP_TASKLIST_REMOVE, parent, task);
@@ -158,61 +187,74 @@ public class TaskManagerImpl implements TaskManager {
         return null;
     }
 
+    @Override
     public FileObject save(Task task) {
         FileObject fo = null;
         try {
             fo = root.createData(task.getId() + ".tsk");
             save(task, fo);
         } catch (Exception e) {
-            e.printStackTrace();
+            Exceptions.printStackTrace(e);
         }
         return fo;
     }
 
-    private void save(Task task, FileObject fo) {
-        java.io.ObjectOutputStream out = null;
+    @Override
+    public void save(Task task, FileObject fo) {
+        ObjectOutputStream out = null;
         try {
-            out = new java.io.ObjectOutputStream(new java.io.BufferedOutputStream(fo.getOutputStream()));
+            out = new ObjectOutputStream(new BufferedOutputStream(fo.getOutputStream()));
             out.writeObject(task);
             fo.setAttribute("saved", SimpleDateFormat.getInstance().format(new Date()));
         } catch (Exception e) {
-            e.printStackTrace();
+            Exceptions.printStackTrace(e);
         } finally {
             try {
                 out.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                Exceptions.printStackTrace(e);
             }
         }
     }
 
+    @Override
     public Task load(FileObject fo) {
         Task task = null;
         ObjectInputStream in = null;
         try {
             in = new ObjectInputStream(new BufferedInputStream(fo.getInputStream()));
             task = (Task) in.readObject();
-            System.out.println("Loaded: " + task + "[" + fo.getAttribute("saved") + "]");
+            System.out.println("Loaded: " + task + " [" + fo.getAttribute("saved") + "]");
             if (!topLevelTasks.contains(task)) {
                 topLevelTasks.add(task);
                 pcs.firePropertyChange(PROP_TASKLIST_ADD, null, task);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Exceptions.printStackTrace(e);
         } finally {
             try {
                 in.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                Exceptions.printStackTrace(e);
             }
         }
         return task;
     }
 
     private void loadTasks() {
-        for (FileObject fo : root.getChildren()) {
-            if ("tsk".equalsIgnoreCase(fo.getExt())) {
-                load(fo);
+        if (taskLoaded) {
+            return;
+        }
+        taskLoaded = true;
+        FileObject[] entries = root.getChildren();
+        for (FileObject fo : entries) {
+            try {
+                DataObject dao = DataObject.find(fo);
+                if (dao != null) {
+                    doByTask.put(dao.getLookup().lookup(Task.class), dao);
+                }
+            } catch (Exception e) {
+                Exceptions.printStackTrace(e);
             }
         }
     }
@@ -223,7 +265,7 @@ public class TaskManagerImpl implements TaskManager {
                 try {
                     fo.delete();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Exceptions.printStackTrace(e);
                 }
             }
         }

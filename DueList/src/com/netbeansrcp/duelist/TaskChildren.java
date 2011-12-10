@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.openide.loaders.DataObject;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
 import org.openide.util.Lookup;
@@ -50,9 +51,10 @@ public class TaskChildren extends Children.Array implements PropertyChangeListen
         endTime = cal.getTimeInMillis();
         List<Task> dueTasks = new ArrayList<Task>();
         if (taskMgr != null) {
-            List<Task> topLevelTasks = taskMgr.getTopLevelTasks();
-            for (Task task : topLevelTasks) {
-                findDueTasks(task, dueTasks);
+            List<DataObject> topLevelTasks = taskMgr.getTopLevelTasks();
+            for (DataObject dao : topLevelTasks) {
+                Task topLevelTask = dao.getLookup().lookup(Task.class);
+                findDueTasks(topLevelTask, dueTasks);
             }
         }
         Collection<Node> dueNodes = new ArrayList<Node>(dueTasks.size());
@@ -70,7 +72,7 @@ public class TaskChildren extends Children.Array implements PropertyChangeListen
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getSource() instanceof Task && (TaskManager.PROP_TASKLIST_ADD.equals(evt.getPropertyName()) || TaskManager.PROP_TASKLIST_REMOVE.equals(evt.getPropertyName()))) {
+        if (evt.getSource() instanceof Task && (Task.PROP_CHILDREN_ADD.equals(evt.getPropertyName()) || Task.PROP_CHILDREN_REMOVE.equals(evt.getPropertyName()))) {
             updateNodes();
         }
         if (evt.getSource() instanceof TaskManager && (TaskManager.PROP_TASKLIST_ADD.equals(evt.getPropertyName()) || TaskManager.PROP_TASKLIST_REMOVE.equals(evt.getPropertyName()))) {

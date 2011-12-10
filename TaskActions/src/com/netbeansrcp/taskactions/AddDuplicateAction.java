@@ -72,7 +72,7 @@ public class AddDuplicateAction extends AbstractAction implements LookupListener
             if (parentId != null && !"".equals(parentId)) {
                 newTask = taskMgr.createTask(original.getName(), original.getParentId());
             } else {
-                newTask = taskMgr.createTask();
+                newTask = taskMgr.createTask().getLookup().lookup(Task.class);
                 newTask.setName(original.getName());
             }
             newTask.setDescr(original.getDescr());
