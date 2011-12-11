@@ -30,9 +30,9 @@ public class NewTaskWizardPanel3 implements WizardDescriptor.Panel {
 
     public HelpCtx getHelp() {
         // Show no Help button for this panel:
-        return HelpCtx.DEFAULT_HELP;
+//        return HelpCtx.DEFAULT_HELP;
         // If you have context help:
-        // return new HelpCtx(SampleWizardPanel1.class);
+         return new HelpCtx(NewTaskWizardPanel3.class);
     }
 
     public boolean isValid() {

@@ -20,6 +20,7 @@ import org.openide.nodes.AbstractNode;
 import org.openide.nodes.Children;
 import org.openide.nodes.PropertySupport;
 import org.openide.nodes.Sheet;
+import org.openide.util.HelpCtx;
 import org.openide.util.ImageUtilities;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
@@ -55,6 +56,11 @@ public class TaskNode extends AbstractNode implements PropertyChangeListener, Lo
 //        result = getLookup().lookup(SaveCookie.class);
         result = getLookup().lookupResult(SaveCookie.class);
         result.addLookupListener(this);
+    }
+
+    @Override
+    public HelpCtx getHelpCtx() {
+        return new HelpCtx(TaskNode.class);
     }
 
     @Override
