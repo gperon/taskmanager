@@ -4,8 +4,8 @@
  */
 package com.netbeansrcp.taskactions;
 
+import com.netbeansrcp.taskactions.wizards.NewTaskWizardAction;
 import com.netbeansrcp.taskmodel.api.Task;
-import com.netbeansrcp.taskmodel.api.TaskManager;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
@@ -24,6 +24,7 @@ import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.actions.Presenter;
+import org.openide.util.actions.SystemAction;
 
 @ActionID(category = "Task",
 id = "com.netbeansrcp.taskactions.AddNewTaskAction")
@@ -55,14 +56,17 @@ public final class AddNewAction extends AbstractAction implements LookupListener
     }
 
     public void actionPerformed(ActionEvent e) {
-        TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
+//        TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
         Task task = null;
         if (result != null && result.allInstances().size() > 0) {
             task = result.allInstances().iterator().next();
-            task = taskMgr.createTask("", task.getId());
+//            task = taskMgr.createTask("", task.getId());
+//            SystemAction.get(NewTaskWizardAction.class);
+            
         } else {
-            task = taskMgr.createTask().getLookup().lookup(Task.class);
+//            task = taskMgr.createTask().getLookup().lookup(Task.class);
         }
+        
         EditAction.openInTaskEditor(task);
     }
 

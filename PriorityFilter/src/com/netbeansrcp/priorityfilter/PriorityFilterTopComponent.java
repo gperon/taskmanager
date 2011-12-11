@@ -9,6 +9,8 @@ import com.netbeansrcp.taskmodel.api.Task;
 import org.openide.util.NbBundle;
 import org.openide.windows.TopComponent;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.nodes.Node;
@@ -125,7 +127,6 @@ public final class PriorityFilterTopComponent extends TopComponent {
     private void jButtonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetActionPerformed
         filter(null);
     }//GEN-LAST:event_jButtonResetActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonHigh;
     private javax.swing.JButton jButtonLow;
@@ -156,12 +157,6 @@ public final class PriorityFilterTopComponent extends TopComponent {
     }
 
     private void filter(Task.Priority prio) {
-        OverviewTopComponent tc = (OverviewTopComponent) WindowManager.getDefault().findTopComponent("OverviewTopComponent");
-        Node root = tc.getExplorerManager().getRootContext();
-        if (root instanceof PriorityFilterNode) {
-            root = ((PriorityFilterNode) root).getOriginal();
-        }
-        Node newRoot = (prio != null) ? new PriorityFilterNode(root, prio) : root;
-        tc.getExplorerManager().setRootContext(newRoot);
+        Filter.filter(prio);
     }
 }

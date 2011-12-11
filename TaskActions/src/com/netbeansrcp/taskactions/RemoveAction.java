@@ -14,6 +14,9 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
@@ -62,9 +65,15 @@ public class RemoveAction extends AbstractAction implements LookupListener, Pres
     public void actionPerformed(ActionEvent e) {
         if (result != null && !result.allInstances().isEmpty()) {
             Task task = result.allInstances().iterator().next();
-            TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
-            if (taskMgr != null && task != null) {
-                taskMgr.removeTask(task.getId());
+            String msg = "Do you really want to delete the task " + task.getId() + " ?";
+            NotifyDescriptor d = new NotifyDescriptor.Confirmation(msg, "Delete Task", NotifyDescriptor.YES_NO_OPTION, NotifyDescriptor.WARNING_MESSAGE);
+            d.setValue(NotifyDescriptor.NO_OPTION);
+            Object res = DialogDisplayer.getDefault().notify(d);
+            if (res != null && DialogDescriptor.YES_OPTION == res) {
+                TaskManager taskMgr = Lookup.getDefault().lookup(TaskManager.class);
+                if (taskMgr != null && task != null) {
+                    taskMgr.removeTask(task.getId());
+                }
             }
         }
     }

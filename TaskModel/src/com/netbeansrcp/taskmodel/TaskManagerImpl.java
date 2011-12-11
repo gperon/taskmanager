@@ -90,6 +90,7 @@ public class TaskManagerImpl implements TaskManager {
 //        removeTask(t2.getId());
 //        System.out.println("Count of know TopLevelTasks after deleting: " + topLevelTasks.size());
 //        loadTasks();
+        
 //        System.out.println("Count of know TopLevelTasks after loading: " + topLevelTasks.size());
 
     }
